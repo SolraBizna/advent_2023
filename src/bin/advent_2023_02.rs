@@ -21,7 +21,8 @@ fn main() {
                     round
                         .split(", ")
                         .map(|color| {
-                            let (amount, color) = color.split_once(' ').unwrap();
+                            let (amount, color) =
+                                color.split_once(' ').unwrap();
                             let amount = amount.parse().unwrap();
                             (color.to_string(), amount)
                         })
@@ -57,7 +58,8 @@ fn main() {
                     .iter()
                     .fold(HashMap::new(), |mut least, round| {
                         for (color, amount) in round.iter() {
-                            let entry = least.entry(color.clone()).or_insert(0);
+                            let entry =
+                                least.entry(color.clone()).or_insert(0);
                             *entry = (*entry).max(*amount);
                         }
                         least
