@@ -15,3 +15,6 @@ This one was harder to understand than to solve. Part 1 was straightforward. On 
 ![](sketch/day03.png)
 
 Day 3 penance sketch: "Did Veris just lose?!"
+
+I actually placed sort of high on the leaderboard this time. Probably because this puzzle is unusual compared to other AOC puzzles, and so folks with extensive libraries of AOC-tailored code are at a disadvantage. My result was also not entirely unmaintainable, although it is really not structured well for testing, and... ugh, that O(n²) bit, I am not proud of.
+
