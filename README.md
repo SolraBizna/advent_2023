@@ -20,7 +20,9 @@ I actually placed sort of high on the leaderboard this time. Probably because th
 
 # Puzzle 4
 
-Day 4 penance sketch: pending.
+![](sketch/day04.png)
+
+Day 4 penance sketch: "Goose Tank"
 
 Uneventful. I'm not thrilled about needing a mut for part 2.
 
