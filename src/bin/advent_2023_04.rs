@@ -37,7 +37,7 @@ fn main() {
         "Puzzle 1 answer: {}",
         cards
             .iter()
-            .map(|card| { 1 << card.num_matches >> 1 })
+            .map(|card| 1 << card.num_matches >> 1)
             .sum::<u32>()
     );
     for n in 0..cards.len() {
@@ -51,6 +51,6 @@ fn main() {
     }
     println!(
         "Puzzle 2 answer: {}",
-        cards.iter().map(|card| { card.num_copies }).sum::<usize>()
+        cards.iter().map(|card| card.num_copies).sum::<usize>()
     );
 }
