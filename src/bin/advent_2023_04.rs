@@ -1,6 +1,6 @@
 struct Card {
-    winning_numbers: Vec<u32>,
-    present_numbers: Vec<u32>,
+    //winning_numbers: Vec<u32>,
+    //present_numbers: Vec<u32>,
     num_matches: usize,
     num_copies: usize,
 }
@@ -27,8 +27,8 @@ fn main() {
                     .iter()
                     .filter(|x| winning_numbers.contains(x))
                     .count(),
-                winning_numbers,
-                present_numbers,
+                //winning_numbers,
+                //present_numbers,
                 num_copies: 1,
             }
         })
