@@ -18,3 +18,9 @@ Day 3 penance sketch: "Did Veris just lose?!"
 
 I actually placed sort of high on the leaderboard this time. Probably because this puzzle is unusual compared to other AOC puzzles, and so folks with extensive libraries of AOC-tailored code are at a disadvantage. My result was also not entirely unmaintainable, although it is really not structured well for testing, and... ugh, that O(n²) bit, I am not proud of.
 
+# Puzzle 4
+
+Day 4 penance sketch: pending.
+
+Uneventful. I'm not thrilled about needing a mut for part 2.
+
