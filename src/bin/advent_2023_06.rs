@@ -19,20 +19,17 @@ fn main() {
     let mut lines = std::io::stdin().lines().map(|x| x.unwrap());
     let line = lines.next().unwrap();
     let (_, rest) = line.split_once(':').unwrap();
-    let times: Vec<u64> = rest
+    let times = rest
         .split(' ')
         .filter(|x| !x.is_empty())
-        .map(|x| x.parse().unwrap())
-        .collect();
+        .map(|x| x.parse().unwrap());
     let line = lines.next().unwrap();
     let (_, rest) = line.split_once(':').unwrap();
-    let distances: Vec<u64> = rest
+    let distances = rest
         .split(' ')
         .filter(|x| !x.is_empty())
-        .map(|x| x.parse().unwrap())
-        .collect();
+        .map(|x| x.parse().unwrap());
     let races: Vec<Race> = times
-        .into_iter()
         .zip(distances)
         .map(|(time, distance)| Race { time, distance })
         .collect();

@@ -36,7 +36,9 @@ This one was very very dense. I first implemented it without much optimization, 
 
 # Puzzle 6
 
-Day 6 penance sketch: prompt pending.
+![](sketch/day06.png)
+
+Day 6 penance sketch: "Draygons!"
 
 This one was confusing. I was really afraid of how small the puzzle was. I expected part 2 to be a doozy. I was not afraid for the right reasons. It ended up being confusingly fast and easy to solve. I got tripped up by ilog10, and... that was all.
 
