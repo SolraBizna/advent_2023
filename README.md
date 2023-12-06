@@ -33,3 +33,13 @@ Uneventful. I'm not thrilled about needing a mut for part 2.
 Day 5 penance sketch: "Steampunk Rock Paper Scissors"
 
 This one was very very dense. I first implemented it without much optimization, but my spidey sense tingled and when I saw part two I saw that it was right to tingle. I ended up implementing a brute force solution first. I knew how to solve it properly, but I had to prove to my audience that rust is *fast*. So, with the aid of Rayon, some sorting, and the humble binary search, I got it chewing through all 2 132 355 834 possible seeds in just 11.843 seconds. (Then I implemented it properly, and that solution takes so little time to run that I can't measure it on my Ryzen.)
+
+# Puzzle 6
+
+Day 6 penance sketch: prompt pending.
+
+This one was confusing. I was really afraid of how small the puzzle was. I expected part 2 to be a doozy. I was not afraid for the right reasons. It ended up being confusingly fast and easy to solve. I got tripped up by ilog10, and... that was all.
+
+?????????
+
+I expected to have to do math...
