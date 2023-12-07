@@ -38,13 +38,13 @@ impl Hand {
         } else if counts[1] + jokers == 3 && counts[2] == 2 {
             HandKind::FullHouse
         } else if counts[1] == 3 && counts[2] + jokers == 2 {
-            HandKind::FullHouse
+            unreachable!(); // thanks, Corfid
         } else if counts[1] + jokers == 3 {
             HandKind::ThreeKind
         } else if counts[1] + jokers == 2 && counts[2] == 2 {
             HandKind::TwoPair
         } else if counts[1] == 2 && counts[2] + jokers == 2 {
-            HandKind::TwoPair
+            unreachable!(); // thanks, Corfid
         } else if counts[1] + jokers == 2 {
             HandKind::OnePair
         } else {
