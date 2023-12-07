@@ -29,6 +29,16 @@ impl Hand {
             counts[*card as usize] += 1;
         }
         counts.sort_by(|a, b| a.cmp(b).reverse());
+        let kind = match counts {
+            [5, _, ..] => HandKind::FiveKind,
+            [4, _, ..] => HandKind::FourKind,
+            [3, 2, ..] => HandKind::FullHouse,
+            [3, _, ..] => HandKind::ThreeKind,
+            [2, 2, ..] => HandKind::TwoPair,
+            [2, _, ..] => HandKind::OnePair,
+            [_, _, ..] => HandKind::HighCard,
+        };
+        /*
         let kind = if counts[0] == 5 {
             HandKind::FiveKind
         } else if counts[0] == 4 {
@@ -47,7 +57,7 @@ impl Hand {
             }
         } else {
             HandKind::HighCard
-        };
+        };*/
         Hand { cards, bid, kind }
     }
 }
