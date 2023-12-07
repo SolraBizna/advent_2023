@@ -48,7 +48,9 @@ I expected to have to do math...
 
 # Puzzle 7
 
-Day 7 penance sketch: prompt pending.
+![](sketch/day07.png)
+
+Day 7 penance sketch: "There are too many torches."
 
 I've actually done some poker simulation work in the past, so I was primed for this puzzle. This ended up working against me, though, since I sorted the cards in the hand (e.g. "2KKAK" → "AKKK2"), which Camel Cards does not do.
 
