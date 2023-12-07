@@ -45,3 +45,12 @@ This one was confusing. I was really afraid of how small the puzzle was. I expec
 ?????????
 
 I expected to have to do math...
+
+# Puzzle 7
+
+Day 7 penance sketch: prompt pending.
+
+I've actually done some poker simulation work in the past, so I was primed for this puzzle. This ended up working against me, though, since I sorted the cards in the hand (e.g. "2KKAK" → "AKKK2"), which Camel Cards does not do.
+
+The changes in part 2 were disruptive enough that, instead of trying to make one codebase that could solve both problems, I made another bin for part 2.
+
