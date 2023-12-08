@@ -58,6 +58,8 @@ The changes in part 2 were disruptive enough that, instead of trying to make one
 
 # Puzzle 8
 
-Day 8 penance sketch: pending.
+![](sketch/day08.png)
+
+Day 8 penance sketch: "Egg sandwiches. Plurals optional."
 
 Kinda confused by this whole puzzle. The nature, not the puzzle itself. Not too difficult to write, though it was pretty scary until I realized that the initial and subsequent cycles were always the same in these inputs. (I was afraid I was going to have to break a cryptosystem today...)
