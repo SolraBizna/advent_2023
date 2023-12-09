@@ -63,3 +63,9 @@ The changes in part 2 were disruptive enough that, instead of trying to make one
 Day 8 penance sketch: "Egg sandwiches. Plurals optional."
 
 Kinda confused by this whole puzzle. The nature, not the puzzle itself. Not too difficult to write, though it was pretty scary until I realized that the initial and subsequent cycles were always the same in these inputs. (I was afraid I was going to have to break a cryptosystem today...)
+
+# Puzzle 9
+
+Day 9 penance sketch: prompt pending.
+
+I was really excited by this puzzle. I don't know why, but its structure was very fun. My solution to part 2 was brute force but effective.
