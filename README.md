@@ -70,4 +70,4 @@ Kinda confused by this whole puzzle. The nature, not the puzzle itself. Not too 
 
 Day 9 penance sketch: "Someone tried to catch Mr. Resetti with a pokéball."
 
-I was really excited by this puzzle. I don't know why, but its structure was very fun. My solution to part 2 was brute force but effective.
+I was really excited by this puzzle. I don't know why, but its structure was very fun. My solution to part 2 was brute force but effective. There's a logic SNAFU in my solution that really bothers me, but I'm not able to figure out what it is...
