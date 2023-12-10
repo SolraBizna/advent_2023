@@ -71,3 +71,13 @@ Kinda confused by this whole puzzle. The nature, not the puzzle itself. Not too 
 Day 9 penance sketch: "Someone tried to catch Mr. Resetti with a pokéball."
 
 I was really excited by this puzzle. I don't know why, but its structure was very fun. My solution to part 2 was brute force but effective. There's a logic SNAFU in my solution that really bothers me, but I'm not able to figure out what it is...
+
+# Puzzle 10
+
+![](sketch/day10.png)
+
+Day 10 penance sketch: "Non-Newtonian fluids."
+
+I was excited by this puzzle, too. Kind of a one-dimensional Dijkstra problem. I was briefly scared of part 2, until I realized that it was equivalent to the polygon filling problem.
+
+I spent some extra time making a general `Tilemap` struct for part 1, and I'm glad I did.
