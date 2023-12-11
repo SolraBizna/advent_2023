@@ -70,6 +70,16 @@ impl<T: Clone> Tilemap<T> {
     pub fn rows(&self) -> impl Iterator<Item = &[T]> {
         self.vec.chunks_exact(self.width as usize)
     }
+    pub fn get_row(&self, y: i32) -> Option<&[T]> {
+        if y < 0 || y >= self.height {
+            None
+        } else {
+            Some(
+                &self.vec[(y * self.width) as usize
+                    ..((y + 1) * self.width) as usize],
+            )
+        }
+    }
     pub fn find_tile(&self, predicate: impl Fn(&T) -> bool) -> Option<Point> {
         for (y, row) in self.rows().enumerate() {
             for (x, tile) in row.iter().enumerate() {
@@ -82,6 +92,23 @@ impl<T: Clone> Tilemap<T> {
             }
         }
         None
+    }
+    pub fn find_tiles<'a>(
+        &'a self,
+        predicate: impl 'a + Clone + Copy + Fn(&T) -> bool,
+    ) -> impl 'a + Iterator<Item = Point> {
+        self.rows().enumerate().flat_map(move |(y, row)| {
+            row.iter().enumerate().filter_map(move |(x, tile)| {
+                if predicate(tile) {
+                    Some(Point {
+                        x: x as i32,
+                        y: y as i32,
+                    })
+                } else {
+                    None
+                }
+            })
+        })
     }
     pub fn get_tile(&self, point: Point) -> Option<&T> {
         if point.x < 0
@@ -145,6 +172,23 @@ impl<T: Clone + Default> Tilemap<T> {
             ],
             width,
             height,
+        }
+    }
+    pub fn insert_blank_row(&mut self, new_y: i32) {
+        assert!(new_y >= 0 && new_y <= self.height);
+        let first_index = (new_y * self.width) as usize;
+        self.vec.splice(
+            first_index..first_index,
+            std::iter::repeat_with(Default::default).take(self.width as usize),
+        );
+        self.height += 1;
+    }
+    pub fn insert_blank_column(&mut self, new_x: i32) {
+        assert!(new_x >= 0 && new_x <= self.width);
+        self.width += 1;
+        for y in 0..self.height {
+            self.vec
+                .insert((new_x + y * self.width) as usize, Default::default());
         }
     }
 }

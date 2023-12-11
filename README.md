@@ -81,3 +81,12 @@ Day 10 penance sketch: "Non-Newtonian fluids."
 I was excited by this puzzle, too. Kind of a one-dimensional Dijkstra problem. I was briefly scared of part 2, until I realized that it was equivalent to the polygon filling problem.
 
 I spent some extra time making a general `Tilemap` struct for part 1, and I'm glad I did.
+
+# Puzzle 11
+
+![](sketch/day11.png)
+
+Day 11 penance sketch: "Izsha doesn't have t[h]um[b]s."
+
+I immediately benefitted from having `Tilemap` as a utility to use. I gave it a few extra features and the naive solution was easy. But even in Rust and even with `--release`, brute forcing part 2 wasn't possible. So I had to do it properly...
+
