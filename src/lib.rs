@@ -149,6 +149,43 @@ impl<T: Clone> Tilemap<T> {
     pub fn get_height(&self) -> i32 {
         self.height
     }
+    pub fn transpose(&self) -> Tilemap<T> {
+        let mut new_vec = Vec::with_capacity(self.vec.len());
+        for x in 0..self.width {
+            for y in 0..self.height {
+                new_vec.push(self.get_tile(Point { x, y }).unwrap().clone())
+            }
+        }
+        Tilemap {
+            vec: new_vec,
+            width: self.height,
+            height: self.width,
+        }
+    }
+    pub fn flip_h(&self) -> Tilemap<T> {
+        let mut new_vec = Vec::with_capacity(self.vec.len());
+        for y in 0..self.height {
+            for x in (0..self.width).rev() {
+                new_vec.push(self.get_tile(Point { x, y }).unwrap().clone())
+            }
+        }
+        Tilemap {
+            vec: new_vec,
+            ..*self
+        }
+    }
+    pub fn flip_v(&self) -> Tilemap<T> {
+        let mut new_vec = Vec::with_capacity(self.vec.len());
+        for y in (0..self.height).rev() {
+            for x in 0..self.width {
+                new_vec.push(self.get_tile(Point { x, y }).unwrap().clone())
+            }
+        }
+        Tilemap {
+            vec: new_vec,
+            ..*self
+        }
+    }
 }
 
 impl<T: Clone + Display> Display for Tilemap<T> {
