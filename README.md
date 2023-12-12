@@ -90,3 +90,8 @@ Day 11 penance sketch: "Izsha doesn't have t[h]um[b]s."
 
 I immediately benefitted from having `Tilemap` as a utility to use. I gave it a few extra features and the naive solution was easy. But even in Rust and even with `--release`, brute forcing part 2 wasn't possible. So I had to do it properly...
 
+# Puzzle 12
+
+Day 12 penance sketch: prompt pending.
+
+A nasty bruteforce solution replaced by an Inspector General reference that is still pretty brute force. It took hours and hours and hours to run. I'm not happy with it or about it. I came up with a new approach far too late in the night, didn't implement it because once I got the second star all puzzle solving juice evaporated from my brain.
