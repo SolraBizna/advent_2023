@@ -95,3 +95,11 @@ I immediately benefitted from having `Tilemap` as a utility to use. I gave it a 
 Day 12 penance sketch: prompt pending.
 
 A nasty bruteforce solution replaced by an Inspector General reference that is still pretty brute force. It took hours and hours and hours to run. I'm not happy with it or about it. I came up with a new approach far too late in the night, didn't implement it because once I got the second star all puzzle solving juice evaporated from my brain.
+
+# Puzzle 13
+
+Day 13 penance sketch: prompt pending.
+
+This puzzle wasn't too bad. I thought I'd found a bug in the puzzle input, but I had just had two off-by-ones cancel each other out in my own code. Part 2 was confusing and I got a little bitter, but I soon was set right.
+
+I implemented transpose back when I turned `Tilemap` into a library. It paid off.
