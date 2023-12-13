@@ -98,7 +98,9 @@ A nasty bruteforce solution replaced by an Inspector General reference that is s
 
 # Puzzle 13
 
-Day 13 penance sketch: prompt pending.
+![](sketch/day13.png)
+
+Day 13 penance sketch: "Free ice cream."
 
 This puzzle wasn't too bad. I thought I'd found a bug in the puzzle input, but I had just had two off-by-ones cancel each other out in my own code. Part 2 was confusing and I got a little bitter, but I soon was set right.
 
