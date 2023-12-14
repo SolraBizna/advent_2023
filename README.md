@@ -108,6 +108,8 @@ I implemented transpose back when I turned `Tilemap` into a library. It paid off
 
 # Puzzle 14
 
-Day 14 penance sketch: prompt pending.
+![](sketch/day14.png)
+
+Day 14 penance sketch: "This is not a place of honor."
 
 `Tilemap` strikes again! Part 1 not too difficult. Part 2 significantly eased by vague memories of how [Hashlife](https://en.wikipedia.org/wiki/Hashlife) works.
