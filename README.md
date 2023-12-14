@@ -105,3 +105,9 @@ Day 13 penance sketch: "Free ice cream."
 This puzzle wasn't too bad. I thought I'd found a bug in the puzzle input, but I had just had two off-by-ones cancel each other out in my own code. Part 2 was confusing and I got a little bitter, but I soon was set right.
 
 I implemented transpose back when I turned `Tilemap` into a library. It paid off.
+
+# Puzzle 14
+
+Day 14 penance sketch: prompt pending.
+
+`Tilemap` strikes again! Part 1 not too difficult. Part 2 significantly eased by vague memories of how [Hashlife](https://en.wikipedia.org/wiki/Hashlife) works.

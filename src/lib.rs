@@ -1,5 +1,6 @@
 use std::{
     fmt::{Display, Formatter, Result as FmtResult},
+    hash::{Hash, Hasher},
     ops::{Add, Neg, Sub},
 };
 
@@ -76,6 +77,16 @@ impl<T: Clone> Tilemap<T> {
         } else {
             Some(
                 &self.vec[(y * self.width) as usize
+                    ..((y + 1) * self.width) as usize],
+            )
+        }
+    }
+    pub fn get_row_mut(&mut self, y: i32) -> Option<&mut [T]> {
+        if y < 0 || y >= self.height {
+            None
+        } else {
+            Some(
+                &mut self.vec[(y * self.width) as usize
                     ..((y + 1) * self.width) as usize],
             )
         }
@@ -229,3 +240,21 @@ impl<T: Clone + Default> Tilemap<T> {
         }
     }
 }
+
+impl<T: Clone + Hash> Hash for Tilemap<T> {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.vec.hash(state);
+        self.width.hash(state);
+        self.height.hash(state);
+    }
+}
+
+impl<T: Clone + PartialEq> PartialEq for Tilemap<T> {
+    fn eq(&self, other: &Self) -> bool {
+        self.vec == other.vec
+            && self.width == other.width
+            && self.height == other.height
+    }
+}
+
+impl<T: Clone + Eq> Eq for Tilemap<T> {}
