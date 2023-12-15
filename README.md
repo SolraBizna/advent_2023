@@ -2,9 +2,13 @@ These are my solutions to the [2023 Advent of Code](https://adventofcode.com/202
 
 # Puzzle 1
 
+Day 1 penance sketch: deferred.
+
 Part 1 was not too bad. I found my code golf instincts kicking in, which is why my solution is structured the way it is. Part 2 was unexpectedly evil. It tripped up a lot of my friends. I found myself getting sucked into a trap where I thought I had failed to solve the problem, but actually I had made a typo when entering my solution. Whoops!
 
 # Puzzle 2
+
+Day 2 penance sketch: deferred.
 
 This one was harder to understand than to solve. Part 1 was straightforward. On Part 2 I was tripped up by my dyslexia (did a min instead of a max), but otherwise it was straightforward too. When I saw the flavor text about "bags with colored cubes" I recognized the phrasing from some much harder mathematical problems, and thought I was in for something much harder.
 
@@ -92,7 +96,7 @@ I immediately benefitted from having `Tilemap` as a utility to use. I gave it a 
 
 # Puzzle 12
 
-Day 12 penance sketch: prompt pending.
+Day 12 penance sketch: deferred.
 
 A nasty bruteforce solution replaced by an Inspector General reference that is still pretty brute force. It took hours and hours and hours to run. I'm not happy with it or about it. I came up with a new approach far too late in the night, didn't implement it because once I got the second star all puzzle solving juice evaporated from my brain.
 
@@ -116,6 +120,6 @@ Day 14 penance sketch: "This is not a place of honor."
 
 # Puzzle 15
 
-Day 15 penance sketch: prompt pending.
+Day 15 penance sketch: deferred.
 
 Uneventful.
