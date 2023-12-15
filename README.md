@@ -113,3 +113,9 @@ I implemented transpose back when I turned `Tilemap` into a library. It paid off
 Day 14 penance sketch: "This is not a place of honor."
 
 `Tilemap` strikes again! Part 1 not too difficult. Part 2 significantly eased by vague memories of how [Hashlife](https://en.wikipedia.org/wiki/Hashlife) works.
+
+# Puzzle 15
+
+Day 15 penance sketch: prompt pending.
+
+Uneventful.
