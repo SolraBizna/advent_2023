@@ -4,7 +4,7 @@ use std::{
     ops::{Add, Neg, Sub},
 };
 
-#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct Point {
     pub x: i32,
     pub y: i32,
@@ -40,6 +40,66 @@ impl Sub for Point {
     }
 }
 
+impl Add<Direction> for Point {
+    type Output = Point;
+    fn add(self, rhs: Direction) -> Self::Output {
+        let rhs: Point = rhs.into();
+        Point {
+            x: self.x + rhs.x,
+            y: self.y + rhs.y,
+        }
+    }
+}
+
+impl Sub<Direction> for Point {
+    type Output = Point;
+    fn sub(self, rhs: Direction) -> Self::Output {
+        let rhs: Point = rhs.into();
+        Point {
+            x: self.x - rhs.x,
+            y: self.y - rhs.y,
+        }
+    }
+}
+
+impl Point {
+    const NORTH: Point = Point { x: 0, y: -1 };
+    const SOUTH: Point = Point { x: 0, y: 1 };
+    const WEST: Point = Point { x: -1, y: 0 };
+    const EAST: Point = Point { x: 1, y: 0 };
+}
+
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
+pub enum Direction {
+    North,
+    South,
+    East,
+    West,
+}
+
+impl From<Point> for Direction {
+    fn from(value: Point) -> Self {
+        match value {
+            Point::NORTH => Direction::North,
+            Point::SOUTH => Direction::South,
+            Point::EAST => Direction::East,
+            Point::WEST => Direction::West,
+            _ => panic!("cannot make a Direction from a non-orthogonal Point"),
+        }
+    }
+}
+
+impl From<Direction> for Point {
+    fn from(value: Direction) -> Self {
+        match value {
+            Direction::North => Point::NORTH,
+            Direction::South => Point::SOUTH,
+            Direction::East => Point::EAST,
+            Direction::West => Point::WEST,
+        }
+    }
+}
+
 #[derive(Clone)]
 pub struct Tilemap<T: Clone> {
     vec: Vec<T>,
@@ -70,6 +130,9 @@ impl<T: Clone> Tilemap<T> {
     }
     pub fn rows(&self) -> impl Iterator<Item = &[T]> {
         self.vec.chunks_exact(self.width as usize)
+    }
+    pub fn iter(&self) -> impl Iterator<Item = &T> {
+        self.vec.iter()
     }
     pub fn get_row(&self, y: i32) -> Option<&[T]> {
         if y < 0 || y >= self.height {

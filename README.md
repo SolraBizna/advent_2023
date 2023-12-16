@@ -123,3 +123,9 @@ Day 14 penance sketch: "This is not a place of honor."
 Day 15 penance sketch: deferred.
 
 Uneventful.
+
+# Puzzle 16
+
+Day 16 penance sketch: deferred.
+
+This is an Oxyd puzzle! I love Oxyd! VROOOOOOM!
