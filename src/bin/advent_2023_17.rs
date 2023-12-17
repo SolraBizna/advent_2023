@@ -35,6 +35,7 @@ impl Ord for PathNode {
 
 impl Eq for PathNode {}
 
+#[allow(unused)]
 fn display_path(end_node: &PathNode, width: i32, height: i32) {
     let mut tiles = Tilemap::new_with('·', width, height);
     let mut next_node = Some(end_node);
