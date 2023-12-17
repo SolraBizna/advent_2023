@@ -4,7 +4,7 @@ use std::{
     ops::{Add, Neg, Sub},
 };
 
-#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Point {
     pub x: i32,
     pub y: i32,
@@ -63,10 +63,10 @@ impl Sub<Direction> for Point {
 }
 
 impl Point {
-    const NORTH: Point = Point { x: 0, y: -1 };
-    const SOUTH: Point = Point { x: 0, y: 1 };
-    const WEST: Point = Point { x: -1, y: 0 };
-    const EAST: Point = Point { x: 1, y: 0 };
+    pub const NORTH: Point = Point { x: 0, y: -1 };
+    pub const SOUTH: Point = Point { x: 0, y: 1 };
+    pub const WEST: Point = Point { x: -1, y: 0 };
+    pub const EAST: Point = Point { x: 1, y: 0 };
 }
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
@@ -75,6 +75,15 @@ pub enum Direction {
     South,
     East,
     West,
+}
+
+impl Direction {
+    pub const ALL: &[Direction] = &[
+        Direction::North,
+        Direction::South,
+        Direction::East,
+        Direction::West,
+    ];
 }
 
 impl From<Point> for Direction {
@@ -100,6 +109,18 @@ impl From<Direction> for Point {
     }
 }
 
+impl Neg for Direction {
+    type Output = Direction;
+    fn neg(self) -> Self {
+        match self {
+            Direction::North => Direction::South,
+            Direction::South => Direction::North,
+            Direction::East => Direction::West,
+            Direction::West => Direction::East,
+        }
+    }
+}
+
 #[derive(Clone)]
 pub struct Tilemap<T: Clone> {
     vec: Vec<T>,
@@ -113,6 +134,16 @@ impl<T: Clone> Tilemap<T> {
             vec: vec![],
             width: 0,
             height: 0,
+        }
+    }
+    pub fn new_with(wat: T, width: i32, height: i32) -> Tilemap<T> {
+        Tilemap {
+            vec: vec![
+                wat;
+                (width.checked_mul(height)).unwrap().try_into().unwrap()
+            ],
+            width,
+            height,
         }
     }
     pub fn add_row(&mut self, row: &[T]) {
