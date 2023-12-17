@@ -73,14 +73,14 @@ fn find_path(
         {
             return path_node;
         }
-        let 死のノード = path_node
+        let デスノード = path_node
             .entry_dir
             .map(|entry_dir| (path_node.pos, entry_dir, path_node.dir_count));
-        if let Some(死のノード) = 死のノード {
-            if dead_nodes.contains(&死のノード) {
+        if let Some(デスノード) = デスノード {
+            if dead_nodes.contains(&デスノード) {
                 continue;
             }
-            dead_nodes.insert(死のノード);
+            dead_nodes.insert(デスノード);
         }
         let path_node = Rc::new(path_node);
         for dir in Direction::ALL {
