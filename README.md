@@ -129,3 +129,9 @@ Uneventful.
 Day 16 penance sketch: deferred.
 
 This is an Oxyd puzzle! I love Oxyd! VROOOOOOM!
+
+# Puzzle 17
+
+Day 17 penance sketch: deferred?
+
+I thought I could use Dijkstra to solve this problem but apparently not. Part 2 was relatively easy after part 1.

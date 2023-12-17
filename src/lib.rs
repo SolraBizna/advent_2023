@@ -84,6 +84,22 @@ impl Direction {
         Direction::East,
         Direction::West,
     ];
+    pub fn to_ordinal(&self) -> usize {
+        match self {
+            Direction::North => 0,
+            Direction::South => 1,
+            Direction::East => 2,
+            Direction::West => 3,
+        }
+    }
+    pub fn to_arrow(&self) -> char {
+        match self {
+            Direction::North => '↑',
+            Direction::South => '↓',
+            Direction::East => '→',
+            Direction::West => '←',
+        }
+    }
 }
 
 impl From<Point> for Direction {

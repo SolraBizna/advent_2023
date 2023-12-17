@@ -1,57 +1,118 @@
 use std::{
     cmp::Ordering,
     collections::{BinaryHeap, HashSet},
-    fmt::{Display, Formatter, Result as FmtResult},
+    rc::Rc,
 };
 
 use advent_2023::{Direction, Point, Tilemap};
 
-const MAX_STRAIGHTS: u8 = 3;
-
-#[derive(Debug, Copy, Clone)]
-struct Cost {
+#[derive(Debug, Clone)]
+struct PathNode {
+    parent: Option<Rc<PathNode>>,
+    pos: Point,
     heatloss: u32,
-    dir: Option<Direction>,
+    entry_dir: Option<Direction>,
     dir_count: u8,
 }
 
-impl PartialEq for Cost {
+impl PartialEq for PathNode {
     fn eq(&self, other: &Self) -> bool {
         self.heatloss == other.heatloss
     }
 }
 
-impl PartialOrd for Cost {
+impl PartialOrd for PathNode {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         Some(self.cmp(other))
     }
 }
 
-impl Ord for Cost {
+impl Ord for PathNode {
     fn cmp(&self, other: &Self) -> Ordering {
-        match self.heatloss.cmp(&other.heatloss).reverse() {
-            Ordering::Equal => self.dir_count.cmp(&other.dir_count).reverse(),
-            x => x,
-        }
+        self.heatloss.cmp(&other.heatloss).reverse()
     }
 }
 
-impl Eq for Cost {}
+impl Eq for PathNode {}
 
-impl Display for Cost {
-    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
-        write!(
-            f,
-            "{}",
-            match self.dir {
-                None => '?',
-                Some(Direction::North) => '↑',
-                Some(Direction::South) => '↓',
-                Some(Direction::East) => '→',
-                Some(Direction::West) => '←',
-            }
-        )
+fn display_path(end_node: &PathNode, width: i32, height: i32) {
+    let mut tiles = Tilemap::new_with('·', width, height);
+    let mut next_node = Some(end_node);
+    while let Some(node) = next_node {
+        tiles.set_tile(
+            node.pos,
+            node.entry_dir.map(|x| x.to_arrow()).unwrap_or('?'),
+        );
+        next_node = node.parent.as_ref().map(|x| x.as_ref());
     }
+    print!("{}", tiles);
+}
+
+fn find_path(
+    pricemap: &Tilemap<u8>,
+    min_straights: u8,
+    max_straights: u8,
+) -> PathNode {
+    let mut live_nodes: BinaryHeap<PathNode> = vec![PathNode {
+        parent: None,
+        pos: Point { x: 0, y: 0 },
+        heatloss: 0,
+        entry_dir: None,
+        dir_count: 0,
+    }]
+    .into();
+    let mut dead_nodes: HashSet<(Point, Direction, u8)> =
+        HashSet::with_capacity(1048576);
+    while let Some(path_node) = live_nodes.pop() {
+        if path_node.pos
+            == (Point {
+                x: pricemap.get_width() - 1,
+                y: pricemap.get_height() - 1,
+            })
+        {
+            return path_node;
+        }
+        let 死のノード = path_node
+            .entry_dir
+            .map(|entry_dir| (path_node.pos, entry_dir, path_node.dir_count));
+        if let Some(死のノード) = 死のノード {
+            if dead_nodes.contains(&死のノード) {
+                continue;
+            }
+            dead_nodes.insert(死のノード);
+        }
+        let path_node = Rc::new(path_node);
+        for dir in Direction::ALL {
+            let dir = *dir;
+            if Some(-dir) == path_node.entry_dir
+                || (Some(dir) == path_node.entry_dir
+                    && path_node.dir_count >= max_straights)
+                || (path_node.entry_dir.is_some()
+                    && Some(dir) != path_node.entry_dir
+                    && path_node.dir_count < min_straights)
+            {
+                // no going too far forwards
+                continue;
+            }
+            let dest_pos = path_node.pos + dir;
+            let Some(&price) = pricemap.get_tile(dest_pos) else {
+                continue;
+            };
+            let next_node = PathNode {
+                parent: Some(path_node.clone()),
+                pos: dest_pos,
+                heatloss: path_node.heatloss + price as u32,
+                entry_dir: Some(dir),
+                dir_count: if path_node.entry_dir == Some(dir) {
+                    path_node.dir_count + 1
+                } else {
+                    1
+                },
+            };
+            live_nodes.push(next_node);
+        }
+    }
+    unreachable!()
 }
 
 fn main() {
@@ -60,96 +121,9 @@ fn main() {
     let mut pricemap = Tilemap::new_empty();
     for line in lines {
         buf.clear();
-        buf.extend(line.chars().map(|x| x.to_digit(10).unwrap()));
+        buf.extend(line.chars().map(|x| x.to_digit(10).unwrap() as u8));
         pricemap.add_row(&buf);
     }
-    let mut costmap: Tilemap<Cost> = Tilemap::new_with(
-        Cost {
-            heatloss: u32::MAX,
-            dir: None,
-            dir_count: 0,
-        },
-        pricemap.get_width(),
-        pricemap.get_height(),
-    );
-    costmap.set_tile(
-        Point { x: 0, y: 0 },
-        Cost {
-            heatloss: 0,
-            dir: None,
-            dir_count: 0,
-        },
-    );
-    // DIJKSTRAAAAAA (formerly)
-    let mut live_nodes: BinaryHeap<(Cost, Point)> = vec![(
-        Cost {
-            heatloss: 0,
-            dir: None,
-            dir_count: 0,
-        },
-        Point { x: 0, y: 0 },
-    )]
-    .into();
-    let mut dead_nodes: HashSet<(Direction, Point)> = HashSet::new();
-    while let Some((cost_here, point_here)) = live_nodes.pop() {
-        if costmap
-            .get_tile(Point {
-                x: costmap.get_width() - 1,
-                y: costmap.get_height() - 1,
-            })
-            .unwrap()
-            .heatloss
-            < u32::MAX
-        {
-            break;
-        }
-        for dir in Direction::ALL {
-            if Some(-*dir) == cost_here.dir
-                || (Some(*dir) == cost_here.dir
-                    && cost_here.dir_count >= MAX_STRAIGHTS)
-            {
-                continue;
-            }
-            let dest = point_here + *dir;
-            let Some(&price_of_dest) = pricemap.get_tile(dest) else {
-                continue;
-            };
-            let cost_of_dest_ref = costmap.get_tile_mut(dest).unwrap();
-            let heatloss_of_dest = price_of_dest + cost_here.heatloss;
-            let cost_of_dest = Cost {
-                heatloss: heatloss_of_dest,
-                dir: Some(*dir),
-                dir_count: if Some(*dir) == cost_here.dir {
-                    cost_here.dir_count + 1
-                } else {
-                    1
-                },
-            };
-            if heatloss_of_dest < cost_of_dest_ref.heatloss {
-                assert_eq!(
-                    cost_of_dest_ref.heatloss,
-                    u32::MAX,
-                    "Meiko was right! Dijkstra didn't hold!"
-                );
-                *cost_of_dest_ref = cost_of_dest;
-            } else {
-                // not a shorter path, Dijkstra was right!
-            }
-            let flapjack = (*dir, point_here);
-            if !dead_nodes.contains(&flapjack) {
-                live_nodes.push((cost_of_dest, dest));
-                dead_nodes.insert(flapjack);
-            }
-        }
-    }
-    println!(
-        "Puzzle 1 answer: {}",
-        costmap
-            .get_tile(Point {
-                x: costmap.get_width() - 1,
-                y: costmap.get_height() - 1,
-            })
-            .unwrap()
-            .heatloss
-    );
+    println!("Puzzle 1 answer: {}", find_path(&pricemap, 1, 3).heatloss);
+    println!("Puzzle 2 answer: {}", find_path(&pricemap, 4, 10).heatloss);
 }
