@@ -137,3 +137,9 @@ This is an Oxyd puzzle! I love Oxyd! VROOOOOOM!
 Day 17 penance sketch: "Fox burger."
 
 I thought I could use Dijkstra to solve this problem but apparently not. Part 2 was relatively easy after part 1.
+
+# Puzzle 18
+
+Day 18 penance sketch: deferred.
+
+I went in all cocky like "aw man I made a Bentley-Ottmann crate, I can use it!" but it didn't turn out to be that applicable. My part 1 solution wasn't quite brute force, but it was blunt force. Part 2 made me tear my hair out. I actually implemented the correct solution after "only" about an hour and a half, except that I made a mistake that caused me to count *every row as filled* at the last moment, so I went around in circles reimplementing stuff until, on my third try, I didn't make that mistake. Argh! I'm not at all happy with this solution but I got the stars, and I gotta save some juice for tomorrow!

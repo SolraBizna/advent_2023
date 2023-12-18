@@ -1,7 +1,7 @@
 use std::{
     fmt::{Display, Formatter, Result as FmtResult},
     hash::{Hash, Hasher},
-    ops::{Add, Neg, Sub},
+    ops::{Add, Mul, Neg, Sub},
 };
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -62,6 +62,16 @@ impl Sub<Direction> for Point {
     }
 }
 
+impl Mul<i32> for Point {
+    type Output = Point;
+    fn mul(self, rhs: i32) -> Self::Output {
+        Point {
+            x: self.x * rhs,
+            y: self.y * rhs,
+        }
+    }
+}
+
 impl Point {
     pub const NORTH: Point = Point { x: 0, y: -1 };
     pub const SOUTH: Point = Point { x: 0, y: 1 };
@@ -100,6 +110,14 @@ impl Direction {
             Direction::West => '←',
         }
     }
+    pub fn rotate_cw(&self) -> Direction {
+        match self {
+            Direction::North => Direction::East,
+            Direction::South => Direction::West,
+            Direction::East => Direction::South,
+            Direction::West => Direction::North,
+        }
+    }
 }
 
 impl From<Point> for Direction {
@@ -134,6 +152,13 @@ impl Neg for Direction {
             Direction::East => Direction::West,
             Direction::West => Direction::East,
         }
+    }
+}
+
+impl Mul<i32> for Direction {
+    type Output = Point;
+    fn mul(self, rhs: i32) -> Point {
+        Point::from(self) * rhs
     }
 }
 
@@ -178,8 +203,14 @@ impl<T: Clone> Tilemap<T> {
     pub fn rows(&self) -> impl Iterator<Item = &[T]> {
         self.vec.chunks_exact(self.width as usize)
     }
+    pub fn rows_mut(&mut self) -> impl Iterator<Item = &mut [T]> {
+        self.vec.chunks_exact_mut(self.width as usize)
+    }
     pub fn iter(&self) -> impl Iterator<Item = &T> {
         self.vec.iter()
+    }
+    pub fn iter_mut(&mut self) -> impl Iterator<Item = &mut T> {
+        self.vec.iter_mut()
     }
     pub fn get_row(&self, y: i32) -> Option<&[T]> {
         if y < 0 || y >= self.height {
@@ -306,6 +337,9 @@ impl<T: Clone> Tilemap<T> {
             vec: new_vec,
             ..*self
         }
+    }
+    pub fn rotate_cw(&self) -> Tilemap<T> {
+        self.transpose().flip_h()
     }
 }
 
