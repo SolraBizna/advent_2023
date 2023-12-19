@@ -99,23 +99,23 @@ impl<P: Clone, S: AsRef<str>> FromIterator<(S, P)> for Part<P> {
 }
 
 #[derive(Debug, Copy, Clone)]
-enum Predicate {
+enum ComparisonOperator {
     LessThan,
     GreaterThan,
 }
 
-impl Predicate {
-    fn from_char(ch: char) -> Predicate {
+impl ComparisonOperator {
+    fn from_char(ch: char) -> ComparisonOperator {
         match ch {
-            '<' => Predicate::LessThan,
-            '>' => Predicate::GreaterThan,
-            x => panic!("Unknown predicate {x:?}"),
+            '<' => ComparisonOperator::LessThan,
+            '>' => ComparisonOperator::GreaterThan,
+            x => panic!("Unknown comparison operator {x:?}"),
         }
     }
     fn evaluate(&self, input1: i32, input2: i32) -> bool {
         match self {
-            Predicate::LessThan => input1 < input2,
-            Predicate::GreaterThan => input1 > input2,
+            ComparisonOperator::LessThan => input1 < input2,
+            ComparisonOperator::GreaterThan => input1 > input2,
         }
     }
     /// Returns: (unmatched, matched)
@@ -125,11 +125,13 @@ impl Predicate {
         input2: i32,
     ) -> (Range<i32>, Range<i32>) {
         match self {
-            Predicate::LessThan => {
+            ComparisonOperator::LessThan => {
                 let (less, great) = split_less_than(inputs, input2);
                 (great, less)
             }
-            Predicate::GreaterThan => split_less_than_or_equal(inputs, input2),
+            ComparisonOperator::GreaterThan => {
+                split_less_than_or_equal(inputs, input2)
+            }
         }
     }
 }
@@ -146,7 +148,7 @@ enum Command {
     Conditional {
         input: String,
         value: i32,
-        predicate: Predicate,
+        comparison_operator: ComparisonOperator,
         destination: String,
     },
     Unconditional {
@@ -162,7 +164,7 @@ impl Command {
             },
             Some(split_point) => {
                 let input = command_string[..split_point].to_string();
-                let predicate = Predicate::from_char(
+                let comparison_operator = ComparisonOperator::from_char(
                     command_string[split_point..].chars().next().unwrap(),
                 );
                 let rest = &command_string[split_point + 1..];
@@ -170,7 +172,7 @@ impl Command {
                 Command::Conditional {
                     input,
                     value: value.parse().unwrap(),
-                    predicate,
+                    comparison_operator,
                     destination: destination.to_string(),
                 }
             }
@@ -181,10 +183,10 @@ impl Command {
             Command::Conditional {
                 input,
                 value,
-                predicate,
+                comparison_operator,
                 destination,
             } => {
-                if predicate.evaluate(*part.get(input), *value) {
+                if comparison_operator.evaluate(*part.get(input), *value) {
                     if destination == "A" {
                         Some(CommandResult::Accept)
                     } else if destination == "R" {
@@ -215,11 +217,11 @@ impl Command {
             Command::Conditional {
                 input,
                 value,
-                predicate,
+                comparison_operator,
                 destination,
             } => {
                 let (unmatched_range, matched_range) =
-                    predicate.split(part.get(input), *value);
+                    comparison_operator.split(part.get(input), *value);
                 let result = if !matched_range.is_empty() {
                     if destination == "A" {
                         Some((matched_range, CommandResult::Accept))
