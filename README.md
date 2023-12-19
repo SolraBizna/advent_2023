@@ -143,3 +143,9 @@ I thought I could use Dijkstra to solve this problem but apparently not. Part 2 
 Day 18 penance sketch: deferred.
 
 I went in all cocky like "aw man I made a Bentley-Ottmann crate, I can use it!" but it didn't turn out to be that applicable. My part 1 solution wasn't quite brute force, but it was blunt force. Part 2 made me tear my hair out. I actually implemented the correct solution after "only" about an hour and a half, except that I made a mistake that caused me to count *every row as filled* at the last moment, so I went around in circles reimplementing stuff until, on my third try, I didn't make that mistake. Argh! I'm not at all happy with this solution but I got the stars, and I gotta save some juice for tomorrow!
+
+# Puzzle 19
+
+Day 19 penance sketch: deferred.
+
+Part 1 was easy. Part 2 was *exciting*. I wasted a lot of time doing extra work to manage *groups of ranges*, forgetting that `<` and `>` cannot result in more than one range on either side. And then a lot of time trying to get VS Code's debugger to redirect stdin, a feature that *doesn't work*. But I did it.
