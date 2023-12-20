@@ -149,3 +149,9 @@ I went in all cocky like "aw man I made a Bentley-Ottmann crate, I can use it!" 
 Day 19 penance sketch: deferred.
 
 Part 1 was easy. Part 2 was *exciting*. I wasted a lot of time doing extra work to manage *groups of ranges*, forgetting that `<` and `>` cannot result in more than one range on either side. And then a lot of time trying to get VS Code's debugger to redirect stdin, a feature that *doesn't work*. But I did it.
+
+# Puzzle 20
+
+Day 20 penance sketch: deferred.
+
+Part 1 was uneventful. I confidently jumped into part 2 with a brute force solution, then realized the problem. After a few hours of screwing around, I made an ER diagram of the inputs and noted the structure of the puzzle. After that, the solution was pretty simple.
