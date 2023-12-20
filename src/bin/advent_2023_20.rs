@@ -1,5 +1,4 @@
 use std::{
-    any::Any,
     collections::{HashMap, VecDeque},
     fmt::Debug,
 };
@@ -7,7 +6,7 @@ use std::{
 use compact_str::{CompactString, ToCompactString};
 use num::Integer;
 
-trait Module: Debug + Any {
+trait Module: Debug {
     /// Called during setup time to inform this module that an input is
     /// connected to it.
     fn connect_input(&mut self, _input_name: CompactString) {}
