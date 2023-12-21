@@ -155,3 +155,9 @@ Part 1 was easy. Part 2 was *exciting*. I wasted a lot of time doing extra work 
 Day 20 penance sketch: deferred.
 
 Part 1 was uneventful. I confidently jumped into part 2 with a brute force solution, then realized the problem. After a few hours of screwing around, I made an ER diagram of the inputs and noted the structure of the puzzle. After that, the solution was pretty simple.
+
+# Puzzle 21
+
+Day 21 penance sketch: deferred.
+
+I wasn't *sure* this could be modelled as a cellular automaton, so I used a Dijkstra-flavored algorithm to solve part 1. Observing the results (and, in hindsight, basic 2D math) showed me that I could. I went down several rabbit holes with part 2, including trying to export the problem into Golly (which couldn't handle the scale). I have not yet gotten the gold star for part 2. I don't know where the holes in my math are, so I'm going to sleep on it.
