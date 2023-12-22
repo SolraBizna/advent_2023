@@ -2,6 +2,7 @@ use std::{
     fmt::{Display, Formatter, Result as FmtResult},
     hash::{Hash, Hasher},
     ops::{Add, Mul, Neg, Sub},
+    str::FromStr,
 };
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -402,3 +403,78 @@ impl<T: Clone + PartialEq> PartialEq for Tilemap<T> {
 }
 
 impl<T: Clone + Eq> Eq for Tilemap<T> {}
+
+#[derive(Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct Point3 {
+    pub x: i32,
+    pub y: i32,
+    pub z: i32,
+}
+
+impl Neg for Point3 {
+    type Output = Point3;
+    fn neg(self) -> Self::Output {
+        Point3 {
+            x: -self.x,
+            y: -self.y,
+            z: -self.z,
+        }
+    }
+}
+
+impl Add for Point3 {
+    type Output = Point3;
+    fn add(self, rhs: Self) -> Self::Output {
+        Point3 {
+            x: self.x + rhs.x,
+            y: self.y + rhs.y,
+            z: self.z + rhs.z,
+        }
+    }
+}
+
+impl Sub for Point3 {
+    type Output = Point3;
+    fn sub(self, rhs: Self) -> Self::Output {
+        Point3 {
+            x: self.x - rhs.x,
+            y: self.y - rhs.y,
+            z: self.z - rhs.z,
+        }
+    }
+}
+
+impl Mul<i32> for Point3 {
+    type Output = Point3;
+    fn mul(self, rhs: i32) -> Self::Output {
+        Point3 {
+            x: self.x * rhs,
+            y: self.y * rhs,
+            z: self.z * rhs,
+        }
+    }
+}
+
+impl Point3 {
+    /// Returns this point, but with each coordinate replaced with -1, 0, or 1
+    /// according to its previous sign.
+    pub fn unit(&self) -> Point3 {
+        Point3 {
+            x: self.x.signum(),
+            y: self.y.signum(),
+            z: self.z.signum(),
+        }
+    }
+    pub fn from_str_or_panic(s: &str) -> Point3 {
+        let mut split = s.split(',');
+        let x = split.next().unwrap();
+        let y = split.next().unwrap();
+        let z = split.next().unwrap();
+        assert!(split.next().is_none());
+        Point3 {
+            x: x.parse().unwrap(),
+            y: y.parse().unwrap(),
+            z: z.parse().unwrap(),
+        }
+    }
+}
