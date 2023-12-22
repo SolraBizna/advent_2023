@@ -166,6 +166,8 @@ I wasn't *sure* this could be modelled as a cellular automaton, so I used a Dijk
 
 # Puzzle 22
 
+![](sketch/day22.png)
+
 Day 22 penance sketch: "Bribing moon with ice cream."
 
 Aside from the _Yoshi's Island_ flashbacks, this one was easy. Annoyingly easy. I don't know why but I took it personally that it was so easy. It was much harder to explain my solution than to write it. I didn't end up having to write a proper brick intersection function because the naive O(n²) method was fast enough. :Z
