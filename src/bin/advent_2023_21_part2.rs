@@ -54,17 +54,19 @@ fn run_cells(prevmap: &Tilemap<Cell>, nextmap: &mut Tilemap<Cell>) {
     }
 }
 
-fn get_populations(cellmap: &Tilemap<Cell>) -> [(u64, u64); 25] {
-    let mut ret = [(0, 0); 25];
+fn get_populations<const Q: usize, const QQ: usize>(
+    cellmap: &Tilemap<Cell>,
+) -> [(u64, u64); QQ] {
+    let mut ret = [(0, 0); QQ];
     for (y, row) in cellmap.rows().enumerate() {
-        let y_sector = (y * 5) / cellmap.get_height() as usize;
+        let y_sector = (y * Q) / cellmap.get_height() as usize;
         for (x, cell) in row.iter().copied().enumerate() {
-            let x_sector = (x * 5) / cellmap.get_width() as usize;
+            let x_sector = (x * Q) / cellmap.get_width() as usize;
             if cell == Cell::Reachable {
-                let sector = x_sector + y_sector * 5;
+                let sector = x_sector + y_sector * Q;
                 ret[sector].0 += 1;
             } else if cell == Cell::Unreachable {
-                let sector = x_sector + y_sector * 5;
+                let sector = x_sector + y_sector * Q;
                 ret[sector].1 += 1;
             }
         }
@@ -80,7 +82,7 @@ fn count_plots(
     let mut total = populations
         [target.min((populations.len() - 1) as u64) as usize]
         .iter()
-        .map(|(a, _)| *a)
+        .map(|(a, b)| if target & 1 == 0 { a } else { b })
         .sum();
     // Add orthogonals
     for steppu in 1.. {
@@ -91,10 +93,7 @@ fn count_plots(
         let gen = gen.min((populations.len() - 1) as u64) as usize;
         for sector in [2, 10, 14, 22] {
             let pop = &populations[gen][sector];
-            if *pop != (0, 0) && steppu == 4 {
-                panic!("\x1b[1mORTHOGONAL {steppu}\x1b[0m")
-            }
-            if steppu % 2 == 0 {
+            if (steppu & 1) ^ (target & 1) == 0 {
                 total += pop.0;
             } else {
                 total += pop.1;
@@ -110,10 +109,7 @@ fn count_plots(
         let gen = gen.min((populations.len() - 1) as u64) as usize;
         for sector in [1, 3, 5, 15, 9, 19, 21, 23] {
             let pop = &populations[gen][sector];
-            if *pop != (0, 0) && steppu == 3 {
-                panic!("\x1b[1mORTHODIAGONAL {steppu}\x1b[0m")
-            }
-            if steppu % 2 == 0 {
+            if (steppu & 1) ^ (target & 1) == 0 {
                 total += pop.0;
             } else {
                 total += pop.1;
@@ -130,10 +126,7 @@ fn count_plots(
         let gen = gen.min((populations.len() - 1) as u64) as usize;
         for sector in [0, 4, 20, 24] {
             let pop = &populations[gen][sector];
-            if *pop != (0, 0) && steppu == 2 {
-                panic!("\x1b[1mSUPERDIAGONAL {steppu}\x1b[0m")
-            }
-            if steppu % 2 == 0 {
+            if (steppu & 1) ^ (target & 1) == 0 {
                 total += pop.0 * multiplier;
             } else {
                 total += pop.1 * multiplier;
@@ -191,11 +184,11 @@ fn main() {
         Cell::Reachable,
     );
     let mut populations = vec![];
-    populations.push(get_populations(&bigmap));
+    populations.push(get_populations::<5, 25>(&bigmap));
     let mut altmap = bigmap.clone();
     loop {
         run_cells(&bigmap, &mut altmap);
-        populations.push(get_populations(&altmap));
+        populations.push(get_populations::<5, 25>(&altmap));
         if bigmap == altmap {
             break;
         }
@@ -220,12 +213,18 @@ fn main() {
     assert!(diagonal_quadrants
         .iter()
         .all(|x| *x == (cellmap.get_width() + 1) as usize));
-    if true {
+    if false {
         drop(bigmap);
         let mut hugemap = Tilemap::new_empty();
-        for _ in 0..9 {
+        for _ in 0..15 {
             for row in cellmap.rows() {
                 buf.clear();
+                buf.extend(row);
+                buf.extend(row);
+                buf.extend(row);
+                buf.extend(row);
+                buf.extend(row);
+                buf.extend(row);
                 buf.extend(row);
                 buf.extend(row);
                 buf.extend(row);
@@ -240,28 +239,45 @@ fn main() {
         }
         hugemap.set_tile(
             Point {
-                x: elf_point.x + cellmap.get_width() * 4,
-                y: elf_point.y + cellmap.get_width() * 4,
+                x: elf_point.x + cellmap.get_width() * 7,
+                y: elf_point.y + cellmap.get_width() * 7,
             },
             Cell::Reachable,
         );
         let mut altmap = hugemap.clone();
         let mut generation_count = 0;
         loop {
-            println!(
-                "{generation_count} {}",
-                generation_count / (cellmap.get_width() as u64)
-            );
             run_cells(&hugemap, &mut altmap);
             if hugemap == altmap {
                 break;
             }
-            generation_count += 1;
-            assert_eq!(
-                count_plots(&populations, &cellmap, generation_count),
-                altmap.iter().filter(|x| **x == Cell::Reachable).count()
-                    as u64
+            println!(
+                "{generation_count} {}",
+                generation_count / (cellmap.get_width() as u64)
             );
+            generation_count += 1;
+            if generation_count == 982 {
+                let true_populations = get_populations::<9, 81>(&hugemap);
+                for row in true_populations.chunks(9) {
+                    for col in row.iter().copied() {
+                        print!("{}\t", col.0);
+                    }
+                    println!();
+                }
+            }
+            if (generation_count & 1) == 0 {
+                assert_eq!(
+                    count_plots(&populations, &cellmap, generation_count),
+                    altmap.iter().filter(|x| **x == Cell::Reachable).count()
+                        as u64
+                );
+            } else {
+                assert_eq!(
+                    count_plots(&populations, &cellmap, generation_count),
+                    altmap.iter().filter(|x| **x == Cell::Unreachable).count()
+                        as u64
+                );
+            }
             std::mem::swap(&mut hugemap, &mut altmap);
         }
     }
