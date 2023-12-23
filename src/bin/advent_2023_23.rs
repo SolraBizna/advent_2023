@@ -97,7 +97,7 @@ fn main() {
     let start_point = Point { x: 1, y: 0 };
     let end_point = Point {
         x: tile_map.get_width() - 2,
-        y: tile_map.get_width() - 1,
+        y: tile_map.get_height() - 1,
     };
     assert!(tile_map.get_tile(start_point) == Some(&Tile::Floor));
     assert!(tile_map.get_tile(end_point) == Some(&Tile::Floor));
