@@ -19,10 +19,19 @@ impl Trajectory {
 }
 
 fn min_dsq(pos1: Point3f, vel1: Point3f, pos2: Point3f, vel2: Point3f) -> f64 {
+    println!("-----------------------");
+    println!("-----------------------");
+    println!("-----------------------");
+    println!("-----------------------");
+    println!("-----------------------");
+    println!("-----------------------");
+    println!("-----------------------");
+    println!("-----------------------");
     let mut w = 1.0;
     let mut w_inc = 1.0;
     let mut dsq = ((pos1 + vel1 * w) - (pos2 + vel2 * w)).magnitude_squared();
     loop {
+        dbg!(w, w_inc, dsq);
         let new_w = w + w_inc;
         let new_dsq = ((pos1 + vel1 * new_w) - (pos2 + vel2 * new_w))
             .magnitude_squared();
@@ -34,7 +43,9 @@ fn min_dsq(pos1: Point3f, vel1: Point3f, pos2: Point3f, vel2: Point3f) -> f64 {
             dsq = new_dsq;
         }
     }
+    w_inc *= 2.0;
     while w_inc >= 1.0 {
+        dbg!(w, w_inc, dsq);
         for mul in [-1.0, 1.0] {
             let new_w = w + w_inc * mul;
             let new_dsq = ((pos1 + vel1 * new_w) - (pos2 + vel2 * new_w))
@@ -47,6 +58,7 @@ fn min_dsq(pos1: Point3f, vel1: Point3f, pos2: Point3f, vel2: Point3f) -> f64 {
         }
         w_inc /= 2.0;
     }
+    dbg!(w, w_inc, dsq);
     dsq
 }
 
@@ -54,7 +66,7 @@ fn rock_errors(
     rock_pos: Point3f,
     rock_vel: Point3f,
     trajectories: &'_ [Trajectory],
-) -> impl '_ + Iterator<Item = f64> {
+) -> impl '_ + Clone + Iterator<Item = f64> {
     trajectories.iter().map(move |trajectory| {
         min_dsq(rock_pos, rock_vel, trajectory.position, trajectory.velocity)
     })
@@ -73,6 +85,17 @@ fn perturbations() -> impl Iterator<Item = Point3f> {
                 })
         })
     })
+}
+
+fn variation(wat: impl Clone + Iterator<Item = f64>) -> f64 {
+    let count = wat.clone().count() as f64;
+    let sum = wat.clone().sum::<f64>();
+    let average = sum / count;
+    wat.map(|x| {
+        let d = x - average;
+        d * d
+    })
+    .sum()
 }
 
 fn main() {
@@ -134,15 +157,55 @@ fn main() {
     println!("Part 1 answer: {total}");
     let mut rng = thread_rng();
     let mut rock_pos = Point3f {
-        x: 0.0,
-        y: 0.0,
-        z: 0.0,
+        x: 19.0,
+        y: 13.0,
+        z: 30.0,
     };
     let mut rock_vel = Point3f {
-        x: 0.0,
-        y: 0.0,
-        z: 0.0,
+        x: -3.0,
+        y: 1.0,
+        z: 2.0,
     };
+    /* Find a good velocity */
+    let mut prev_error: f64 =
+        variation(rock_errors(rock_pos, rock_vel, &trajectories));
+    loop {
+        println!(
+            "{:10} ← {},{},{}",
+            prev_error as i64,
+            rock_vel.x as i64,
+            rock_vel.y as i64,
+            rock_vel.z as i64
+        );
+        println!(
+            "{:?}",
+            rock_errors(rock_pos, rock_vel, &trajectories)
+                .collect::<Vec<f64>>()
+        );
+        let mut best_error = prev_error;
+        let mut best_vel = rock_vel;
+        for perturbation in perturbations() {
+            if best_error == 0.0 {
+                break;
+            }
+            let error = variation(rock_errors(
+                rock_pos,
+                rock_vel + perturbation,
+                &trajectories,
+            ));
+            if error < best_error {
+                best_error = error;
+                best_vel = rock_vel + perturbation;
+            }
+        }
+        if rock_vel == best_vel {
+            panic!("Stuck!");
+        }
+        prev_error = best_error;
+        rock_vel = best_vel;
+    }
+    println!("Velocity: {rock_vel:?}");
+    return;
     let mut prev_error: f64 =
         rock_errors(rock_pos, rock_vel, &trajectories).sum();
     loop {

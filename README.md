@@ -181,3 +181,17 @@ An Oxyd puzzle again!
 While I was pondering a better, graph-theory-driven solution for part 2, my brute force solution gave me an answer. I helped a student implement the better solution though.
 
 (I ended up on the global leaderboard for once! I'm gonna feel pretty self-important for a while.)
+
+# Puzzle 24
+
+Day 24 penance sketch: nope.
+
+Part 1 was easy and a little fun. It gave me a bad feeling because it "required" floating point math (unlike literally every other AOC puzzle I've ever seen), but it was math I knew and could teach, so I was okay with it.
+
+Part 2 was infuriating.
+
+I'm seriously, genuinely upset about this. I feel like I got to the million dollar question and then found out the hard way that the game was fixed against me all along. Every other AOC puzzle I've ever solved was made of things that a programmer should know, or could benefit from learning. Every other puzzle was wonderfully fertile ground for teaching (and learning from!) my students. Part 2 of puzzle 24 this year is completely out of left field in "physics PhD" territory. I pledged to solve every puzzle this year and I was bait and switched out of keeping that pledge at the last second.
+
+I'm leaving the source code of the point at which I gave up on my solution in here. It solves part 1. I tried to put together various root solvers to solve part 2 but it wasn't good enough. I tried to understand the math well enough to solve it myself but I got nothing but a headache from that. Meanwhile, over a thousand people have "solved the puzzle" by shoving a system of equations into MATLAB or Z3 by hand, and they all got their gold stars.
+
+Well, if that's the standard, I'm getting mine and moving the fuck on.
