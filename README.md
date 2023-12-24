@@ -195,3 +195,11 @@ I'm seriously, genuinely upset about this. I feel like I got to the million doll
 I'm leaving the source code of the point at which I gave up on my solution in here. It solves part 1. I tried to put together various root solvers to solve part 2 but it wasn't good enough. I tried to understand the math well enough to solve it myself but I got nothing but a headache from that. Meanwhile, over a thousand people have "solved the puzzle" by shoving a system of equations into MATLAB or Z3 by hand, and they all got their gold stars.
 
 Well, if that's the standard, I'm getting mine and moving the fuck on.
+
+[Edit after the fact]
+
+Here's a better metaphor. I'm on day 24 of a 25-day painting contest. I'm partly here because I watched the previous years and loved watching all the painters get better by painting with different materials, subjects, etc. Going outside their comfort zones and honing their craft. So imagine my surprise when I find out that day 24's painting challenge is "3D print a Benchy".
+
+If I encounter a complex system of linear equations "in the wild", I'll break out Octave or pull up Wolfram Alpha and I'll solve it that way. Just like how if I need a Benchy I'd use a 3D printer and not a paintbrush. But this was a *painting* contest, not a *usually painting but occasionally other barely-related things* contest!
+
+I'm really unreasonably upset about this.
