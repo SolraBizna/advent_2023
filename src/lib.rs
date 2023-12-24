@@ -478,3 +478,68 @@ impl Point3 {
         }
     }
 }
+#[derive(Copy, Clone, Debug, PartialEq, PartialOrd)]
+pub struct Point3f {
+    pub x: f64,
+    pub y: f64,
+    pub z: f64,
+}
+
+impl Neg for Point3f {
+    type Output = Point3f;
+    fn neg(self) -> Self::Output {
+        Point3f {
+            x: -self.x,
+            y: -self.y,
+            z: -self.z,
+        }
+    }
+}
+
+impl Add for Point3f {
+    type Output = Point3f;
+    fn add(self, rhs: Self) -> Self::Output {
+        Point3f {
+            x: self.x + rhs.x,
+            y: self.y + rhs.y,
+            z: self.z + rhs.z,
+        }
+    }
+}
+
+impl Sub for Point3f {
+    type Output = Point3f;
+    fn sub(self, rhs: Self) -> Self::Output {
+        Point3f {
+            x: self.x - rhs.x,
+            y: self.y - rhs.y,
+            z: self.z - rhs.z,
+        }
+    }
+}
+
+impl Mul<f64> for Point3f {
+    type Output = Point3f;
+    fn mul(self, rhs: f64) -> Self::Output {
+        Point3f {
+            x: self.x * rhs,
+            y: self.y * rhs,
+            z: self.z * rhs,
+        }
+    }
+}
+
+impl Point3f {
+    pub fn from_str_or_panic(s: &str) -> Point3f {
+        let mut split = s.split(',');
+        let x = split.next().unwrap();
+        let y = split.next().unwrap();
+        let z = split.next().unwrap();
+        assert!(split.next().is_none());
+        Point3f {
+            x: x.parse().unwrap(),
+            y: y.parse().unwrap(),
+            z: z.parse().unwrap(),
+        }
+    }
+}
