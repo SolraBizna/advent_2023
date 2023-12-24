@@ -542,4 +542,7 @@ impl Point3f {
             z: z.parse().unwrap(),
         }
     }
+    pub fn magnitude_squared(&self) -> f64 {
+        self.x * self.x + self.y * self.y + self.z * self.z
+    }
 }

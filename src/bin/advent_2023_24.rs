@@ -1,4 +1,5 @@
 use advent_2023::Point3f;
+use rand::prelude::*;
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 struct Trajectory {
@@ -15,6 +16,63 @@ impl Trajectory {
             velocity: Point3f::from_str_or_panic(velocity),
         }
     }
+}
+
+fn min_dsq(pos1: Point3f, vel1: Point3f, pos2: Point3f, vel2: Point3f) -> f64 {
+    let mut w = 1.0;
+    let mut w_inc = 1.0;
+    let mut dsq = ((pos1 + vel1 * w) - (pos2 + vel2 * w)).magnitude_squared();
+    loop {
+        let new_w = w + w_inc;
+        let new_dsq = ((pos1 + vel1 * new_w) - (pos2 + vel2 * new_w))
+            .magnitude_squared();
+        if new_dsq >= dsq {
+            break;
+        } else {
+            w_inc *= 2.0;
+            w = new_w;
+            dsq = new_dsq;
+        }
+    }
+    while w_inc >= 1.0 {
+        for mul in [-1.0, 1.0] {
+            let new_w = w + w_inc * mul;
+            let new_dsq = ((pos1 + vel1 * new_w) - (pos2 + vel2 * new_w))
+                .magnitude_squared();
+            if new_dsq < dsq {
+                w = new_w;
+                dsq = new_dsq;
+                break;
+            }
+        }
+        w_inc /= 2.0;
+    }
+    dsq
+}
+
+fn rock_errors(
+    rock_pos: Point3f,
+    rock_vel: Point3f,
+    trajectories: &'_ [Trajectory],
+) -> impl '_ + Iterator<Item = f64> {
+    trajectories.iter().map(move |trajectory| {
+        min_dsq(rock_pos, rock_vel, trajectory.position, trajectory.velocity)
+    })
+}
+
+fn perturbations() -> impl Iterator<Item = Point3f> {
+    (-1..=1).flat_map(|x| {
+        (-1..=1).flat_map(move |y| {
+            (-1..=1)
+                .map(move |z| (x, y, z))
+                .filter(|(x, y, z)| *x != 0 || *y != 0 || *z != 0)
+                .map(|(x, y, z)| Point3f {
+                    x: x as f64,
+                    y: y as f64,
+                    z: z as f64,
+                })
+        })
+    })
 }
 
 fn main() {
@@ -38,36 +96,32 @@ fn main() {
             let b_slope = b.velocity.y / b.velocity.x;
             let a_intercept = a.position.y - a.position.x * a_slope;
             let b_intercept = b.position.y - b.position.x * b_slope;
-            if a_index == 0 && b_index == 1 {
-                eprintln!("{a_index} and {b_index}; y = {a_slope} x + {a_intercept}, y = {b_slope} x + {b_intercept}");
-            }
             if a_slope == b_slope {
                 assert_ne!(a_intercept, b_intercept);
                 continue;
             }
-            if (a_intercept - a.position.x).signum() != a.velocity.x.signum() {
-                // past
-                continue;
-            }
-            if (a_intercept - a.position.x).abs() < 1.0 {
-                continue;
-            }
-            if (b_intercept - b.position.x).signum() != b.velocity.x.signum() {
-                // past
-                continue;
-            }
-            if (b_intercept - b.position.x).abs() < 1.0 {
-                continue;
-            }
             let intersection_x =
                 (a_intercept - b_intercept) / (b_slope - a_slope);
+            if (intersection_x - a.position.x).signum()
+                != a.velocity.x.signum()
+            {
+                // past
+                continue;
+            }
+            if (intersection_x - a.position.x).abs() < 1.0 {
+                continue;
+            }
+            if (intersection_x - b.position.x).signum()
+                != b.velocity.x.signum()
+            {
+                // past
+                continue;
+            }
+            if (intersection_x - b.position.x).abs() < 1.0 {
+                continue;
+            }
             let intersection_y = intersection_x * a_slope + a_intercept;
             let intersection_y2 = intersection_x * b_slope + b_intercept;
-            /*if (intersection_y - intersection_y2).abs() > 0.01 {
-                eprintln!(
-                    "{a_index},{b_index} = {intersection_y}, {intersection_y2}"
-                );
-            }*/
             if test_range.contains(&intersection_x)
                 && (test_range.contains(&intersection_y)
                     || test_range.contains(&intersection_y2))
@@ -78,4 +132,79 @@ fn main() {
         }
     }
     println!("Part 1 answer: {total}");
+    let mut rng = thread_rng();
+    let mut rock_pos = Point3f {
+        x: 0.0,
+        y: 0.0,
+        z: 0.0,
+    };
+    let mut rock_vel = Point3f {
+        x: 0.0,
+        y: 0.0,
+        z: 0.0,
+    };
+    let mut prev_error: f64 =
+        rock_errors(rock_pos, rock_vel, &trajectories).sum();
+    loop {
+        /*
+        println!(
+            "Pos: {},{},{} Vel: {} {} {} Err: {}",
+            rock_pos.x as i64,
+            rock_pos.y as i64,
+            rock_pos.z as i64,
+            rock_vel.x as i64,
+            rock_vel.y as i64,
+            rock_vel.z as i64,
+            prev_error as i64,
+        );
+        */
+        eprint!("Err: {}           \r", prev_error);
+        if prev_error == 0.0 {
+            break;
+        }
+        let mut best_error = prev_error;
+        let mut best_pos = rock_pos;
+        let mut best_vel = rock_vel;
+        for perturbation in perturbations() {
+            if best_error == 0.0 {
+                break;
+            }
+            let error =
+                rock_errors(rock_pos + perturbation, rock_vel, &trajectories)
+                    .sum();
+            if error < best_error {
+                best_error = error;
+                best_pos = rock_pos + perturbation;
+                best_vel = rock_vel;
+            }
+            let error =
+                rock_errors(rock_pos, rock_vel + perturbation, &trajectories)
+                    .sum();
+            if error < best_error {
+                best_error = error;
+                best_pos = rock_pos;
+                best_vel = rock_vel + perturbation;
+            }
+        }
+        if best_error < prev_error {
+            prev_error = best_error;
+            rock_pos = best_pos;
+            rock_vel = best_vel;
+        } else if best_error == prev_error {
+            // give up!
+            //println!();
+            rock_pos = Point3f {
+                x: rng.gen_range(test_range.clone()).floor(),
+                y: rng.gen_range(test_range.clone()).floor(),
+                z: rng.gen_range(test_range.clone()).floor(),
+            };
+            rock_vel = Point3f {
+                x: 0.0,
+                y: 0.0,
+                z: 0.0,
+            };
+            prev_error = rock_errors(rock_pos, rock_vel, &trajectories).sum();
+        }
+    }
+    println!("Part 2 answer: {}", rock_pos.x + rock_pos.y + rock_pos.z);
 }
