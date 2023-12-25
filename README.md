@@ -198,8 +198,14 @@ Well, if that's the standard, I'm getting mine and moving the fuck on.
 
 [Edit after the fact]
 
-Here's a better metaphor. I'm on day 24 of a 25-day painting contest. I'm partly here because I watched the previous years and loved watching all the painters get better by painting with different materials, subjects, etc. Going outside their comfort zones and honing their craft. So imagine my surprise when I find out that day 24's painting challenge is "3D print a Benchy".
+Here's a better metaphor. I'm on day 24 of a 25-day painting contest. I'm partly here because I watched the previous years and loved watching all the painters get better by painting with different materials, methods, subjects, etc. Going outside their comfort zones and honing their craft. So imagine my surprise when I find out that day 24's painting challenge is "3D print a Benchy using the provided filament".
 
 If I encounter a complex system of linear equations "in the wild", I'll break out Octave or pull up Wolfram Alpha and I'll solve it that way. Just like how if I need a Benchy I'd use a 3D printer and not a paintbrush. But this was a *painting* contest, not a *usually painting but occasionally other barely-related things* contest!
 
 I'm really unreasonably upset about this.
+
+# Puzzle 25
+
+Day 25 penance sketch: deferred.
+
+A nice exercise. Brute force, plus a little help from hand tracing of an ERD. Slam.

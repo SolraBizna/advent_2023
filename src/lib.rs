@@ -2,7 +2,6 @@ use std::{
     fmt::{Display, Formatter, Result as FmtResult},
     hash::{Hash, Hasher},
     ops::{Add, Mul, Neg, Sub},
-    str::FromStr,
 };
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
