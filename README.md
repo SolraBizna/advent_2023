@@ -209,3 +209,5 @@ I'm really unreasonably upset about this.
 Day 25 penance sketch: deferred.
 
 A nice exercise. Brute force, plus a little help from hand tracing of an ERD. Slam.
+
+The multithreading causes it to occasionally not solve the puzzle but who's complaining...
